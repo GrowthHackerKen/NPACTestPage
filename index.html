@@ -467,5 +467,667 @@ print 'Sorted in ' + i + ' iterations.';</code></pre>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+		<!-- =========================
+NPAC Client Marketing Tool
+Modular Sections + Export to JSON
+========================= -->
+
+<!-- OPTIONAL: Shared styling (include once) -->
+<style>
+  .npac-section {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+    background: #fff;
+  }
+  .npac-section__header { margin-bottom: 12px; }
+  .npac-section__title { margin: 0 0 6px; font-size: 1.2rem; }
+  .npac-section__help { margin: 0; opacity: 0.85; line-height: 1.35; }
+
+  .npac-field { margin-top: 14px; }
+  .npac-label { display:block; font-weight: 600; margin-bottom: 6px; }
+  .npac-input, .npac-select, .npac-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font: inherit;
+    background: #fff;
+  }
+  .npac-textarea { resize: vertical; }
+  .npac-hint { margin: 6px 0 0; font-size: 0.92rem; opacity: 0.75; }
+
+  .npac-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 18px 0 28px;
+  }
+  .npac-button {
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font: inherit;
+    background: #f7f7f7;
+    cursor: pointer;
+  }
+  .npac-button:hover { background: #efefef; }
+  .npac-smallnote { opacity: 0.8; font-size: 0.95rem; }
+  .npac-json-preview {
+    width: 100%;
+    min-height: 140px;
+    margin-top: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+</style>
+
+<!-- Put all sections inside a parent container. You can reorder sections freely. -->
+<div id="npac-client-marketing-tool">
+
+  <!-- =========================
+  Section 1: Branding
+  ========================= -->
+  <section class="npac-section" id="npac-branding" data-section="branding">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 1: Branding</h2>
+      <p class="npac-section__help">
+        Create a brand identity for your performance.
+        <strong>Outputs:</strong> logo direction, font suggestions, and a color scheme.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="branding_working_title">Working title for your performance</label>
+      <input class="npac-input" type="text" id="branding_working_title" name="branding_working_title"
+             placeholder="e.g., Long Day’s Journey (Workshop Cut)" autocomplete="off" />
+      <p class="npac-hint">Use the current best title—this can be updated later.</p>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="branding_category">Category</label>
+      <select class="npac-select" id="branding_category" name="branding_category">
+        <option value="" selected disabled>Select one…</option>
+        <option value="dramatic_play">Dramatic play</option>
+        <option value="musical">Musical</option>
+        <option value="live_music">Live music</option>
+        <option value="comedy">Comedy</option>
+        <option value="dance">Dance</option>
+        <option value="spoken_word">Spoken word</option>
+        <option value="family">Family / Youth</option>
+        <option value="other">Other</option>
+      </select>
+      <p class="npac-hint">Helps shape visual identity and recommended channels.</p>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="branding_one_liner">One-line brand promise (optional)</label>
+      <input class="npac-input" type="text" id="branding_one_liner" name="branding_one_liner"
+             placeholder="e.g., An intimate classic about family, addiction, and forgiveness." autocomplete="off" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="branding_keywords">Brand keywords (optional)</label>
+      <textarea class="npac-textarea" id="branding_keywords" name="branding_keywords" rows="3"
+                placeholder="e.g., intimate, literary, coastal, elegant, contemporary, high-stakes"></textarea>
+      <p class="npac-hint">Comma-separated is perfect.</p>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 2: Audience Targeting
+  ========================= -->
+  <section class="npac-section" id="npac-audience-targeting" data-section="audience-targeting">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 2: Audience Targeting</h2>
+      <p class="npac-section__help">
+        Target your marketing to the right audience.
+        <strong>Outputs:</strong> recommended platforms + hashtag strategy.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="audience_demographic">Target demographic</label>
+      <input class="npac-input" type="text" id="audience_demographic" name="audience_demographic"
+             placeholder="e.g., mature audiences, Gen X, theater donors, college students" autocomplete="off" />
+      <p class="npac-hint">If possible: age range, interests, location, and income level.</p>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="audience_geo">Geography focus (optional)</label>
+      <input class="npac-input" type="text" id="audience_geo" name="audience_geo"
+             placeholder="e.g., Greater NYC, Greater Boston, Rhode Island, national livestream" autocomplete="off" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="audience_hashtags">Hashtags you think fit (optional)</label>
+      <textarea class="npac-textarea" id="audience_hashtags" name="audience_hashtags" rows="3"
+                placeholder="#NewportRI&#10;#Theatre&#10;#LiveStream"></textarea>
+      <p class="npac-hint">One per line is easiest.</p>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="audience_notes">Audience notes (optional)</label>
+      <textarea class="npac-textarea" id="audience_notes" name="audience_notes" rows="4"
+                placeholder="e.g., Likely to attend Newport in summer; strong interest in classic drama; willing to pay for premium livestream."></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 3: Show Overview
+  ========================= -->
+  <section class="npac-section" id="npac-show-overview" data-section="show-overview">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 3: Show Overview</h2>
+      <p class="npac-section__help">
+        Capture the core story and value proposition.
+        <strong>Outputs:</strong> website copy, listing text, pitch-ready summary.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="overview_logline">Logline (1 sentence)</label>
+      <input class="npac-input" type="text" id="overview_logline" name="overview_logline"
+             placeholder="e.g., A family faces the truth over one long night—love, blame, and survival." />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="overview_short_blurb">Short blurb (50–80 words)</label>
+      <textarea class="npac-textarea" id="overview_short_blurb" name="overview_short_blurb" rows="5"
+                placeholder="Write what someone should know in under a minute…"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="overview_long_description">Long description (optional)</label>
+      <textarea class="npac-textarea" id="overview_long_description" name="overview_long_description" rows="7"
+                placeholder="Use this for press kits, sponsors, and long-form web pages."></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="overview_unique_angle">What makes this unique? (optional)</label>
+      <textarea class="npac-textarea" id="overview_unique_angle" name="overview_unique_angle" rows="4"
+                placeholder="e.g., First staging in Newport; celebrity creative; modern reinterpretation; immersive elements; etc."></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 4: Creative Team & Cast
+  ========================= -->
+  <section class="npac-section" id="npac-team" data-section="creative-team-cast">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 4: Creative Team & Cast</h2>
+      <p class="npac-section__help">
+        Who’s making it — and why the audience should care.
+        <strong>Outputs:</strong> bios for web, press, sponsors.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="team_key_people">Key people (names + roles)</label>
+      <textarea class="npac-textarea" id="team_key_people" name="team_key_people" rows="6"
+                placeholder="e.g.,&#10;Jane Doe — Producer&#10;John Smith — Director&#10;A. Actor — Lead"></textarea>
+      <p class="npac-hint">One person per line works best.</p>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="team_credits">Notable credits / awards (optional)</label>
+      <textarea class="npac-textarea" id="team_credits" name="team_credits" rows="4"
+                placeholder="e.g., Broadway credits, film/TV credits, festival selections, awards"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="team_socials">Social handles (optional)</label>
+      <textarea class="npac-textarea" id="team_socials" name="team_socials" rows="4"
+                placeholder="@producer_handle&#10;@director_handle&#10;@lead_actor"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 5: Dates, Runtime, and Venue Logistics
+  ========================= -->
+  <section class="npac-section" id="npac-logistics" data-section="dates-runtime-venue">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 5: Dates, Runtime, and Venue Logistics</h2>
+      <p class="npac-section__help">
+        Information audiences look for before buying.
+        <strong>Outputs:</strong> listing accuracy + fewer customer questions.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="logistics_performance_dates">Performance dates & times</label>
+      <textarea class="npac-textarea" id="logistics_performance_dates" name="logistics_performance_dates" rows="4"
+                placeholder="e.g.,&#10;Fri Jun 12 — 7:30pm&#10;Sat Jun 13 — 2:00pm & 7:30pm&#10;Sun Jun 14 — 2:00pm"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="logistics_runtime">Runtime + intermission</label>
+      <input class="npac-input" type="text" id="logistics_runtime" name="logistics_runtime"
+             placeholder="e.g., 2h 45m including one 15m intermission" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="logistics_age_guidance">Age guidance / content notes (optional)</label>
+      <input class="npac-input" type="text" id="logistics_age_guidance" name="logistics_age_guidance"
+             placeholder="e.g., Recommended 16+; adult themes; strong language" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="logistics_special_notes">Special notes (optional)</label>
+      <textarea class="npac-textarea" id="logistics_special_notes" name="logistics_special_notes" rows="4"
+                placeholder="e.g., Talkback after Saturday matinee; limited seating; late seating policy"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 6: Ticketing & Pricing (In-Person + Streaming)
+  ========================= -->
+  <section class="npac-section" id="npac-ticketing" data-section="ticketing-pricing">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 6: Ticketing & Pricing</h2>
+      <p class="npac-section__help">
+        Define offers and price points for live seats and livestream access.
+        <strong>Outputs:</strong> purchase options, bundles, upsells.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="ticketing_inperson_prices">In-person ticket tiers</label>
+      <textarea class="npac-textarea" id="ticketing_inperson_prices" name="ticketing_inperson_prices" rows="4"
+                placeholder="e.g.,&#10;Premium: $85&#10;Standard: $55&#10;Student: $25"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="ticketing_stream_prices">Livestream ticket tiers</label>
+      <textarea class="npac-textarea" id="ticketing_stream_prices" name="ticketing_stream_prices" rows="4"
+                placeholder="e.g.,&#10;Single stream pass: $15&#10;HD stream + 48hr replay: $25&#10;Group watch (up to 10): $99"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="ticketing_bundles">Bundles / add-ons (optional)</label>
+      <textarea class="npac-textarea" id="ticketing_bundles" name="ticketing_bundles" rows="4"
+                placeholder="e.g., VIP reception + premium seat; Stream + digital program; Sponsor a student ticket"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="ticketing_cta">Primary call-to-action (CTA)</label>
+      <input class="npac-input" type="text" id="ticketing_cta" name="ticketing_cta"
+             placeholder="e.g., Reserve your seat • Buy the livestream pass • Limited availability" />
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 7: Livestream Details
+  ========================= -->
+  <section class="npac-section" id="npac-livestream" data-section="livestream-details">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 7: Livestream Details</h2>
+      <p class="npac-section__help">
+        Make the stream feel premium and clarify access.
+        <strong>Outputs:</strong> livestream landing page copy + FAQs.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="streaming_showtimes">Which performances are livestreamed?</label>
+      <textarea class="npac-textarea" id="streaming_showtimes" name="streaming_showtimes" rows="3"
+                placeholder="e.g., Sat 7:30pm + Sun 2:00pm livestream only"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="streaming_access_model">Access model</label>
+      <select class="npac-select" id="streaming_access_model" name="streaming_access_model">
+        <option value="" selected disabled>Select one…</option>
+        <option value="live_only">Live only (no replay)</option>
+        <option value="live_plus_replay">Live + replay window</option>
+        <option value="replay_only">Replay only (VOD after event)</option>
+      </select>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="streaming_replay_window">Replay window (if applicable)</label>
+      <input class="npac-input" type="text" id="streaming_replay_window" name="streaming_replay_window"
+             placeholder="e.g., Replay available for 48 hours after the livestream ends" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="streaming_features">Stream features (optional)</label>
+      <textarea class="npac-textarea" id="streaming_features" name="streaming_features" rows="4"
+                placeholder="e.g., Live chat, post-show talkback stream, behind-the-scenes pre-roll, multi-camera"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="streaming_faq">Livestream FAQs (optional)</label>
+      <textarea class="npac-textarea" id="streaming_faq" name="streaming_faq" rows="6"
+                placeholder="e.g.,&#10;Q: What devices are supported?&#10;A: ...&#10;Q: Can I cast to TV?&#10;A: ..."></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 8: Marketing Assets Checklist
+  ========================= -->
+  <section class="npac-section" id="npac-assets" data-section="marketing-assets">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 8: Marketing Assets</h2>
+      <p class="npac-section__help">
+        Track what you have (and what you need).
+        <strong>Outputs:</strong> asset gaps + content plan.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="assets_available">Assets you already have</label>
+      <textarea class="npac-textarea" id="assets_available" name="assets_available" rows="5"
+                placeholder="e.g., logo draft, rehearsal photos, 30-second trailer, poster, cast headshots"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="assets_needed">Assets you need (optional)</label>
+      <textarea class="npac-textarea" id="assets_needed" name="assets_needed" rows="5"
+                placeholder="e.g., updated poster, short social cutdowns, sponsor slide, press photos"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="assets_links">Links to files (Drive/Dropbox URLs) (optional)</label>
+      <textarea class="npac-textarea" id="assets_links" name="assets_links" rows="4"
+                placeholder="Paste links here (one per line)"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 9: Social Content Plan
+  ========================= -->
+  <section class="npac-section" id="npac-social-plan" data-section="social-content-plan">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 9: Social Content Plan</h2>
+      <p class="npac-section__help">
+        Define what to post and when.
+        <strong>Outputs:</strong> posting cadence + content themes.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="social_platforms">Platforms you plan to use</label>
+      <textarea class="npac-textarea" id="social_platforms" name="social_platforms" rows="3"
+                placeholder="e.g., Instagram, TikTok, YouTube, Facebook, LinkedIn"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="social_themes">Content themes (optional)</label>
+      <textarea class="npac-textarea" id="social_themes" name="social_themes" rows="4"
+                placeholder="e.g., rehearsal moments, director notes, cast spotlights, Newport backdrop, audience reactions"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="social_schedule">Posting schedule (optional)</label>
+      <textarea class="npac-textarea" id="social_schedule" name="social_schedule" rows="4"
+                placeholder="e.g.,&#10;T-21 to T-7: 3 posts/week + 5 stories/week&#10;T-7 to show: daily stories + 4 posts"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 10: Press & Partnerships
+  ========================= -->
+  <section class="npac-section" id="npac-press" data-section="press-partnerships">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 10: Press & Partnerships</h2>
+      <p class="npac-section__help">
+        Prepare outreach targets and angles.
+        <strong>Outputs:</strong> press pitch, partnership list, quotes.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="press_angles">Press angles (why this matters now)</label>
+      <textarea class="npac-textarea" id="press_angles" name="press_angles" rows="4"
+                placeholder="e.g., rare staging, debut, new interpretation, cultural relevance, notable cast"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="press_targets">Press targets / partners (optional)</label>
+      <textarea class="npac-textarea" id="press_targets" name="press_targets" rows="5"
+                placeholder="e.g., local papers, arts blogs, radio, universities, cultural orgs (one per line)"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="press_quotes">Pull quotes (optional)</label>
+      <textarea class="npac-textarea" id="press_quotes" name="press_quotes" rows="4"
+                placeholder="e.g., Director statement, producer quote, audience quote"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 11: Sponsorship Offer
+  ========================= -->
+  <section class="npac-section" id="npac-sponsorship" data-section="sponsorship-offer">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 11: Sponsorship Offer</h2>
+      <p class="npac-section__help">
+        Define sponsorship inventory and tiers.
+        <strong>Outputs:</strong> sponsor one-pager structure + tier language.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="sponsor_audience_value">Why your audience is valuable (optional)</label>
+      <textarea class="npac-textarea" id="sponsor_audience_value" name="sponsor_audience_value" rows="4"
+                placeholder="e.g., affluent cultural travelers; donors; coastal community; national theater audience via livestream"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="sponsor_inventory">Sponsor inventory (what sponsors get)</label>
+      <textarea class="npac-textarea" id="sponsor_inventory" name="sponsor_inventory" rows="6"
+                placeholder="e.g., logo on livestream pre-roll, on-site signage, program ad, mention by host, email inclusion"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="sponsor_tiers">Sponsorship tiers (optional)</label>
+      <textarea class="npac-textarea" id="sponsor_tiers" name="sponsor_tiers" rows="5"
+                placeholder="e.g.,&#10;Title Sponsor: $25,000&#10;Presenting: $10,000&#10;Supporting: $2,500"></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 12: Accessibility & Inclusion
+  ========================= -->
+  <section class="npac-section" id="npac-accessibility" data-section="accessibility">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 12: Accessibility & Inclusion</h2>
+      <p class="npac-section__help">
+        Set expectations and expand reach.
+        <strong>Outputs:</strong> accessibility notes for listings and stream page.
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="access_services">Accessibility services (optional)</label>
+      <textarea class="npac-textarea" id="access_services" name="access_services" rows="4"
+                placeholder="e.g., captions on livestream, ASL night, wheelchair seating, sensory-friendly info"></textarea>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="access_notes">Additional notes (optional)</label>
+      <textarea class="npac-textarea" id="access_notes" name="access_notes" rows="3"
+                placeholder="Anything audiences should know in advance."></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Section 13: Contact & Approvals
+  ========================= -->
+  <section class="npac-section" id="npac-contact" data-section="contact-approvals">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Section 13: Contact & Approvals</h2>
+      <p class="npac-section__help">
+        Who should NPAC contact for marketing approvals and updates?
+      </p>
+    </header>
+
+    <div class="npac-field">
+      <label class="npac-label" for="contact_name">Primary contact name</label>
+      <input class="npac-input" type="text" id="contact_name" name="contact_name" placeholder="Full name" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="contact_email">Email</label>
+      <input class="npac-input" type="email" id="contact_email" name="contact_email" placeholder="name@company.com" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="contact_phone">Phone (optional)</label>
+      <input class="npac-input" type="tel" id="contact_phone" name="contact_phone" placeholder="(###) ###-####" />
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="contact_approval_notes">Approval process notes (optional)</label>
+      <textarea class="npac-textarea" id="contact_approval_notes" name="contact_approval_notes" rows="4"
+                placeholder="e.g., Producer must approve ad copy; Director approves trailer; 24hr turnaround preferred."></textarea>
+    </div>
+  </section>
+
+
+  <!-- =========================
+  Export Actions (Button at End)
+  ========================= -->
+  <section class="npac-section" id="npac-export" data-section="export">
+    <header class="npac-section__header">
+      <h2 class="npac-section__title">Export</h2>
+      <p class="npac-section__help">
+        Download everything entered on this page as a JSON file (useful for saving, sharing, and re-importing later).
+      </p>
+    </header>
+
+    <div class="npac-actions">
+      <button class="npac-button" type="button" id="npacExportJsonBtn">Export to JSON</button>
+      <span class="npac-smallnote" id="npacExportStatus" aria-live="polite"></span>
+    </div>
+
+    <div class="npac-field">
+      <label class="npac-label" for="npacJsonPreview">JSON preview (optional)</label>
+      <textarea class="npac-textarea npac-json-preview" id="npacJsonPreview" readonly></textarea>
+      <p class="npac-hint">This preview updates when you export.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- =========================
+Export to JSON Script (include once)
+========================= -->
+<script>
+  (function () {
+    const root = document.getElementById("npac-client-marketing-tool");
+    const exportBtn = document.getElementById("npacExportJsonBtn");
+    const statusEl = document.getElementById("npacExportStatus");
+    const previewEl = document.getElementById("npacJsonPreview");
+
+    if (!root || !exportBtn) return;
+
+    function getTimestampForFilename() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      return (
+        d.getFullYear() +
+        "-" + pad(d.getMonth() + 1) +
+        "-" + pad(d.getDate()) +
+        "_" + pad(d.getHours()) +
+        "-" + pad(d.getMinutes()) +
+        "-" + pad(d.getSeconds())
+      );
+    }
+
+    function collectFormValues(container) {
+      const data = {
+        meta: {
+          exported_at_iso: new Date().toISOString(),
+          tool: "NPAC Client Marketing Tool",
+          sections: []
+        },
+        fields: {}
+      };
+
+      // Capture section order + ids (useful if you reorder sections later)
+      const sections = Array.from(container.querySelectorAll("section[data-section]"));
+      data.meta.sections = sections.map((s) => ({
+        id: s.id || null,
+        key: s.getAttribute("data-section") || null
+      }));
+
+      // Gather all inputs/selects/textareas that have a name attribute
+      const controls = container.querySelectorAll("input[name], select[name], textarea[name]");
+      controls.forEach((el) => {
+        const name = el.name;
+
+        // For checkboxes/radios (future-proof)
+        if (el.type === "checkbox") {
+          data.fields[name] = !!el.checked;
+          return;
+        }
+        if (el.type === "radio") {
+          if (el.checked) data.fields[name] = el.value;
+          else if (!(name in data.fields)) data.fields[name] = null;
+          return;
+        }
+
+        data.fields[name] = el.value;
+      });
+
+      return data;
+    }
+
+    function downloadJson(obj) {
+      const json = JSON.stringify(obj, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const title = (obj.fields.branding_working_title || "npac_performance")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "")
+        .slice(0, 60) || "npac_performance";
+
+      const filename = `${title}_${getTimestampForFilename()}.json`;
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+      return { json, filename };
+    }
+
+    exportBtn.addEventListener("click", function () {
+      try {
+        const payload = collectFormValues(root);
+        const { json, filename } = downloadJson(payload);
+
+        if (previewEl) previewEl.value = json;
+        if (statusEl) statusEl.textContent = `Downloaded: ${filename}`;
+      } catch (err) {
+        console.error(err);
+        if (statusEl) statusEl.textContent = "Export failed. Check console for details.";
+      }
+    });
+  })();
+</script>
+
 	</body>
+
 </html>

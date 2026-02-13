@@ -551,7 +551,19 @@ Modular Sections + Export to JSON
     <div class="npac-actions">
       <button class="npac-button" type="button" id="npacExportJsonBtn">Export to JSON</button>
       <span class="npac-smallnote" id="npacExportStatus" aria-live="polite"></span>
-    </div>
+
+	<div class="npac-actions">
+  <button class="npac-button" type="button" id="npacSendToChatgptBtn">Generate Report in ChatGPT</button>
+  <span class="npac-smallnote" id="npacChatgptStatus" aria-live="polite"></span>
+</div>
+
+<div class="npac-field">
+  <label class="npac-label" for="npacChatgptPromptPreview">ChatGPT prompt preview (auto-generated)</label>
+  <textarea class="npac-textarea npac-json-preview" id="npacChatgptPromptPreview" readonly></textarea>
+  <p class="npac-hint">Click “Generate Report in ChatGPT” to copy this prompt, then paste into ChatGPT.</p>
+</div>
+
+	</div>
 
     <div class="npac-field">
       <label class="npac-label" for="npacJsonPreview">JSON preview (optional)</label>
@@ -567,7 +579,88 @@ Export to JSON Script (include once)
 ========================= -->
 <script>
   (function () {
-    const root = document.getElementById("npac-client-marketing-tool");
+    const chatgptBtn = document.getElementById("npacSendToChatgptBtn");
+const chatgptStatusEl = document.getElementById("npacChatgptStatus");
+const chatgptPromptPreviewEl = document.getElementById("npacChatgptPromptPreview");
+
+	  function buildChatgptPrompt(payload) {
+  // You can tune this prompt however you want over time.
+  // It is intentionally explicit so ChatGPT returns a comprehensive marketing report.
+  return [
+    "You are NPAC’s marketing strategist. Create ONE comprehensive marketing report for a producer’s live event at NPAC.",
+    "",
+    "Requirements:",
+    "1) Use the data below as the source of truth. Do not invent missing facts—ask for gaps only at the end under 'Missing Inputs'.",
+    "2) Output should be a structured report with clear headings and bullet points.",
+    "3) The report must cover BOTH in-person attendance and paid livestream marketing.",
+    "4) Provide specific deliverables the producer can copy/paste: ad copy, email copy, landing page copy, social post drafts, hashtag sets, and a short press pitch.",
+    "",
+    "Include these sections in your report:",
+    "- Executive Summary (what this show is, who it’s for, and what to do next)",
+    "- Brand & Positioning (name options if title is weak, tone, keywords, visual direction: logo concepts, fonts, color palette)",
+    "- Audience Targeting (personas, geo focus, motivations, objections)",
+    "- Platform Strategy (best platforms + why, by audience segment)",
+    "- Content Plan (2–4 weeks pre-show + show week; post cadence; themes; suggested formats)",
+    "- Copy Pack (headline options, 150-character, 50-word, and 150-word descriptions; CTAs)",
+    "- Paid Media Suggestions (budget split guidance by platform; targeting ideas; A/B test suggestions)",
+    "- Livestream Offer Strategy (positioning, tiers, replay window recommendations, conversion levers)",
+    "- Press & Partnerships (angles, outreach list types, sample pitch email)",
+    "- Sponsorship One-Pager (value proposition + inventory + tier language based on what’s provided)",
+    "- Logistics & FAQ (runtime, content notes, talkbacks; stream FAQ suggestions)",
+    "- Missing Inputs (only if needed)",
+    "",
+    "Here is the producer-submitted data (JSON):",
+    JSON.stringify(payload, null, 2)
+  ].join("\n");
+}
+
+async function copyToClipboard(text) {
+  // Best-effort clipboard copy; falls back if Clipboard API is unavailable.
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.setAttribute("readonly", "");
+  document.body.appendChild(ta);
+  ta.select();
+  const ok = document.execCommand("copy");
+  ta.remove();
+  return ok;
+}
+
+	  if (chatgptBtn) {
+  chatgptBtn.addEventListener("click", async function () {
+    try {
+      const payload = collectFormValues(root);
+
+      const prompt = buildChatgptPrompt(payload);
+
+      if (chatgptPromptPreviewEl) chatgptPromptPreviewEl.value = prompt;
+
+      const copied = await copyToClipboard(prompt);
+
+      // Open ChatGPT in a new tab (user then pastes the copied prompt)
+      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+
+      if (chatgptStatusEl) {
+        chatgptStatusEl.textContent = copied
+          ? "Copied prompt to clipboard. ChatGPT opened in a new tab—paste and press Enter."
+          : "Opened ChatGPT. Copy the prompt from the preview box and paste it into ChatGPT.";
+      }
+    } catch (err) {
+      console.error(err);
+      if (chatgptChatgptStatusEl) chatgptChatgptStatusEl.textContent = "Could not generate prompt. Check console.";
+      if (chatgptStatusEl) chatgptStatusEl.textContent = "Could not generate prompt. Check console.";
+    }
+  });
+}
+
+	  
+	  const root = document.getElementById("npac-client-marketing-tool");
     const exportBtn = document.getElementById("npacExportJsonBtn");
     const statusEl = document.getElementById("npacExportStatus");
     const previewEl = document.getElementById("npacJsonPreview");
@@ -669,4 +762,5 @@ Export to JSON Script (include once)
 	</body>
 
 </html>
+
 
